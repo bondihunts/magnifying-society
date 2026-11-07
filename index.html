@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>O'Brien File Desk</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=Courier+Prime:wght@400;700&family=Caveat:wght@700&display=swap">
+<style>
+/* Layout: mobile-first. One paper only (the case file, in the hero). Every other section is written straight on the desk, in lamplight.
+   Objects carry the story: a 1919 estate map pinned beside the pitch, three index cards joined by red string, three old prints whose strings converge on the booking card.
+   Type: Big Shoulders Display for headings; Courier Prime for typed text; Caveat for handwriting. */
+:root{
+  --wood:#2A1E16; --wood-2:#31231a;
+  --paper:#EFE4CC; --card:#F2ECDD; --print:#F4EFE3;
+  --ink:#221913; --muted:#5C4E40; --red:#A3302A;
+  --chalk:#EDE2CA; --chalk-soft:#C9BBA0; --rust:#E2735C; --rule:rgba(237,226,202,.22);
+  --lamp:rgba(255,204,128,.28); --dark:rgba(8,5,3,.72);
+  --shadow:0 18px 28px rgba(0,0,0,.5), 0 3px 6px rgba(0,0,0,.4);
+  --noise:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .2 0 0 0 0 .14 0 0 0 0 .08 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.28'/%3E%3C/svg%3E");
+  --f-display:'Big Shoulders Display','Arial Narrow',Impact,sans-serif;
+  --f-type:'Courier Prime','Courier New',monospace;
+  --f-hand:'Caveat','Bradley Hand','Comic Sans MS',cursive;
+  color-scheme:dark;
+}
+html,body{background:#1d140e}
+body{font-family:var(--f-type);color:var(--chalk);font-size:16px}
+#desk{position:relative;min-height:100vh;overflow:hidden;
+  background:
+    var(--noise),
+    repeating-linear-gradient(91deg, transparent 0 38px, rgba(0,0,0,.16) 38px 40px, transparent 40px 67px, rgba(0,0,0,.12) 67px 68px, transparent 68px 103px),
+    linear-gradient(var(--wood), var(--wood-2))}
+.lamp{position:fixed;inset:0;pointer-events:none;z-index:1;
+  background:radial-gradient(ellipse 100% 46% at 50% 10%, var(--lamp) 0%, rgba(255,190,110,.06) 52%, var(--dark) 94%)}
+.inner{position:relative;z-index:2;max-width:1120px;margin:0 auto;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+
+a{color:inherit}
+:focus-visible{outline:3px solid #F2C14E;outline-offset:3px}
+.skip{position:absolute;left:16px;top:-60px;z-index:20;background:var(--chalk);color:var(--ink);padding:12px 16px}
+.skip:focus{top:12px}
+
+/* header */
+.btn{box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;min-height:48px;font-family:var(--f-display);font-weight:800;font-size:20px;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;padding:0 24px}
+.btn-red{background:var(--red);color:#fff}
+.btn-red:hover{background:#8d2721}
+.btn-line{box-shadow:inset 0 0 0 2px var(--ink);color:var(--ink)}
+.btn-line:hover{background:rgba(34,25,19,.08)}
+nav .btn{min-height:44px;font-size:17px;padding:0 18px}
+
+/* type */
+h1,h2,h3{font-family:var(--f-display);font-weight:800;text-transform:uppercase;text-wrap:balance;margin:0;letter-spacing:.01em}
+h1{font-size:clamp(60px,17vw,150px);line-height:.84;color:var(--ink)}
+h2{font-size:clamp(40px,10vw,64px);line-height:.92;color:var(--chalk)}
+h3{font-size:26px;line-height:1}
+p{margin:0}
+.body{font-size:16px;line-height:1.75}
+.hand{font-family:var(--f-hand);font-weight:700}
+main section{position:relative}
+.section{padding-block:72px}
+
+/* objects */
+.paper{position:relative;background-image:var(--noise);background-color:var(--paper);box-shadow:var(--shadow);transform:rotate(var(--r,0deg));color:var(--ink)}
+.clip{position:absolute;top:-17px;left:30px;width:22px;height:58px;border:3px solid #a7adb2;border-radius:12px;border-bottom-color:transparent;z-index:3}
+.tape{position:absolute;top:-11px;left:50%;width:86px;height:24px;margin-left:-43px;background:rgba(236,224,190,.55);transform:rotate(-4deg);z-index:2}
+.pin{position:absolute;top:-7px;left:50%;margin-left:-7px;width:14px;height:14px;border-radius:50%;background:var(--red);box-shadow:inset -2px -2px 0 rgba(0,0,0,.25), 0 3px 4px rgba(0,0,0,.4);z-index:3}
+.print{position:relative;margin:0;background-color:var(--print);background-image:var(--noise);padding:8px 8px 10px;box-shadow:var(--shadow);transform:rotate(var(--r,0deg));color:var(--ink)}
+.print img{display:block;width:100%;height:auto;filter:sepia(.25) contrast(1.02)}
+.print figcaption{font-family:var(--f-hand);font-weight:700;font-size:19px;line-height:1.1;margin-top:6px}
+
+/* strings */
+.strings{position:absolute;inset:0;width:100%;height:100%;z-index:4;pointer-events:none;overflow:visible}
+.strings .s{fill:none;stroke:var(--red);stroke-width:2.2;stroke-linecap:round}
+.strings .sh{fill:none;stroke:rgba(0,0,0,.45);stroke-width:2.2;stroke-linecap:round}
+.strings .pinhead{fill:var(--red)}
+.strings .pinshine{fill:rgba(255,255,255,.45)}
+.anchor{position:absolute;width:2px;height:2px}
+
+/* hero: the only paper */
+.hero{padding-block:30px 20px}
+.casefile{--r:-.6deg;padding:48px 20px 32px}
+.hero-grid{display:flex;flex-direction:column;gap:28px}
+.hero-photos{order:2;display:flex;gap:12px;align-items:flex-start;margin:12px -6px 0}
+.hero-photos .print{flex:1 1 0;min-width:0}
+.hp1{--r:-3deg}
+.hp2{--r:4deg;margin-top:22px}
+.hero-photos figcaption{font-size:16px}
+.form{display:flex;flex-wrap:wrap;gap:10px 22px;margin:0 0 26px;font-size:14px}
+.form div{display:flex;gap:8px;align-items:baseline}
+.form dt{color:var(--muted)}
+.form dd{margin:0;font-weight:700;border-bottom:1px dotted var(--ink);padding:0 6px 1px}
+.title-wrap{position:relative}
+.stamp-big{position:absolute;right:4%;bottom:-6px;font-family:var(--f-display);font-weight:800;font-size:clamp(30px,8vw,40px);letter-spacing:.12em;color:var(--red);text-transform:uppercase;
+  border:3px solid var(--red);outline:1.5px solid var(--red);outline-offset:3px;padding:2px 12px;transform:rotate(-11deg);mix-blend-mode:multiply;opacity:.85;
+  animation:thump .5s cubic-bezier(.3,1.4,.5,1) .5s both}
+@keyframes thump{0%{opacity:0;transform:rotate(-11deg) scale(1.9)}70%{opacity:.9}100%{opacity:.85;transform:rotate(-11deg) scale(1)}}
+.lead{font-size:20px;line-height:1.5;margin-top:24px;max-width:30em}
+.meta{font-size:15px;color:var(--muted);margin:10px 0 26px}
+.ctas{display:flex;flex-wrap:wrap;gap:12px}
+.ctas .btn{flex:1 1 180px}
+
+/* the case: text on the desk + the 1919 estate map */
+.case-grid{display:flex;flex-direction:column;gap:48px}
+.case-text h2{margin-bottom:22px}
+.pitch{display:flex;flex-direction:column;gap:16px;max-width:60ch}
+.pitch p:first-child::first-letter,.intro h2 + .body::first-letter{font-family:var(--f-display);font-weight:800;font-size:3.4em;float:left;line-height:.8;padding:4px 10px 0 0;color:var(--rust)}
+.mapprint{--r:2deg;padding:10px 10px 12px}
+.mapprint .pin{top:-6px}
+
+/* experience */
+.exp-grid{display:flex;flex-direction:column;gap:40px;margin-bottom:72px}
+.intro{max-width:62ch}
+.practice-card{padding:30px 22px 26px;--r:1.2deg}
+.practice-card h3{font-size:30px;margin-bottom:14px}
+.practice-card .facts{border-top-color:var(--ink)}
+.practice-card .fact{grid-template-columns:22px minmax(0,1fr) auto;gap:2px 12px;padding:12px 0;border-bottom-color:rgba(34,25,19,.3)}
+.practice-card .fact:last-child{border-bottom-color:var(--ink)}
+.practice-card .fact svg{stroke:var(--red);width:20px;height:20px}
+.practice-card .fact dt{font-size:15px}
+.practice-card .fact .note{color:var(--muted)}
+.practice-card .fact dd{font-size:22px}
+.practice-card .btn{width:100%;margin-top:20px}
+.intro h2{margin-bottom:22px}
+.intro .body + .body{margin-top:14px}
+.steps{display:flex;flex-direction:column;gap:40px;list-style:none;margin:0;padding:0}
+.step{display:grid;grid-template-columns:96px minmax(0,1fr);gap:0 22px;align-items:start}
+.stamp-num{grid-row:span 2;width:86px;height:86px;border-radius:50%;border:3px solid var(--rust);outline:1.5px solid var(--rust);outline-offset:4px;color:var(--rust);display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:var(--f-display);font-weight:800;font-size:42px;line-height:.85;transform:rotate(var(--r,-8deg));opacity:.92}
+.stamp-num span{font-size:14px;letter-spacing:.12em}
+.step h3{color:var(--chalk);font-size:28px;margin:8px 0 8px}
+.step .body{color:var(--chalk);font-size:16px;line-height:1.65;max-width:34ch}
+.js .stamp-num.wait{opacity:0}
+.stamp-num.in{animation:thump2 .45s cubic-bezier(.3,1.4,.5,1) var(--d,0s) both}
+@keyframes thump2{0%{opacity:0;transform:rotate(var(--r,-8deg)) scale(2.1)}100%{opacity:.92;transform:rotate(var(--r,-8deg)) scale(1)}}
+
+/* practice: a ledger on the desk */
+.practice h2{margin-bottom:24px}
+.facts{margin:0;border-top:2px solid var(--chalk);max-width:760px}
+.fact{display:grid;grid-template-columns:26px minmax(0,1fr) auto;gap:4px 14px;align-items:center;padding:16px 0;border-bottom:1px solid var(--rule)}
+.fact:last-child{border-bottom:2px solid var(--chalk)}
+.fact svg{width:22px;height:22px;fill:none;stroke:var(--rust);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.fact dt{font-size:16px;line-height:1.3}
+.fact .note{display:block;font-size:13px;color:var(--chalk-soft);margin-top:3px}
+.fact dd{margin:0;font-family:var(--f-display);font-weight:800;font-size:26px;text-align:right;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+
+/* converge */
+.converge{padding-block:40px 80px}
+.cv-row{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
+.cv-row .print{width:46%;max-width:300px}
+.cv-row.top .print:first-child{--r:-4deg}
+.cv-row.top .print:last-child{--r:4deg}
+.cv-row.bottom{justify-content:center}
+.cv-row.bottom .print{--r:-2deg;width:58%}
+.cv-row.top .anchor{left:50%;top:6px}
+.cv-row.bottom .anchor{left:50%;top:10px}
+.cv-card{position:relative;width:min(460px,100%);margin:56px auto;padding:56px 22px 34px;text-align:center;transform:rotate(-1.5deg);z-index:2;color:var(--ink);box-shadow:var(--shadow);
+  background-color:var(--card);
+  background-image:var(--noise), linear-gradient(transparent 34px, rgba(163,48,42,.55) 34px, rgba(163,48,42,.55) 35.5px, transparent 35.5px), repeating-linear-gradient(transparent 0 27px, rgba(70,110,150,.18) 27px 28px)}
+.cv-card .a-top{left:50%;top:14px}
+.cv-card .a-bottom{left:50%;bottom:14px}
+.cv-card .hand{font-size:24px;margin-bottom:6px;color:var(--ink)}
+.cv-card h2{font-size:clamp(52px,15vw,84px);margin-bottom:24px;color:var(--ink)}
+.cv-card .btn{width:100%;max-width:320px}
+
+/* faq: on the desk */
+.faq .sub{font-size:14px;color:var(--chalk-soft);margin:12px 0 10px}
+.faq-wrap{max-width:820px}
+.faq h3{font-size:24px;margin:36px 0 8px;color:var(--rust)}
+.group{border-bottom:1px solid var(--rule)}
+.faq details{border-top:1px solid var(--rule)}
+.faq summary{list-style:none;cursor:pointer;display:flex;gap:12px;align-items:flex-start;padding:15px 0;min-height:48px;font-size:17px;line-height:1.45;font-weight:700}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary:hover .t{text-decoration:underline;text-underline-offset:4px}
+.faq .q{flex:none;color:var(--rust)}
+.faq summary .t{flex:1;min-width:0}
+.faq summary .sign{flex:none;font-family:var(--f-display);font-weight:800;font-size:24px;line-height:1;width:22px;text-align:center}
+.faq details[open] summary .sign::before{content:"\2013"}
+.faq details:not([open]) summary .sign::before{content:"+"}
+.faq .ans{display:flex;gap:12px;padding:0 0 18px;font-size:16px;line-height:1.7;color:var(--chalk)}
+.faq .ans .q{color:var(--chalk-soft)}
+
+footer{position:relative;z-index:2;padding-block:34px;border-top:1px solid var(--rule)}
+footer .inner{display:flex;flex-direction:column;gap:6px;align-items:center;text-align:center}
+footer p{font-size:14px;color:var(--chalk-soft)}
+
+@media (min-width:760px){
+  .lamp{background:radial-gradient(ellipse 70% 58% at 30% 14%, var(--lamp) 0%, rgba(255,190,110,.06) 48%, var(--dark) 92%)}
+  .section{padding-block:100px}
+  .hero{padding-block:44px 10px}
+  .casefile{padding:64px 52px 56px 60px}
+  .hero-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:48px;align-items:center}
+  .hero-photos{order:2;display:block;margin:40px -8px 0 0}
+  .title-wrap{position:static}
+  .stamp-big{top:46px;right:60px;bottom:auto;font-size:58px;padding:4px 22px;outline-offset:5px}
+  .hero-photos .print{width:100%}
+  .hp1{width:92%!important}
+  .hp2{width:84%!important;margin:-40px 0 0 auto}
+  .hero-photos figcaption{font-size:20px}
+  .ctas .btn{flex:0 0 auto}
+  .exp-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:56px;align-items:start}
+  .exp-grid .practice-card{order:-1}
+  .case-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:64px;align-items:center}
+  .steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:48px}
+  .step{grid-template-columns:1fr}
+  .stamp-num{grid-row:auto;margin:0 0 18px 6px}
+  .fact{padding:18px 6px}
+  .fact dd{font-size:30px}
+  .cv-row{max-width:1000px;margin:0 auto}
+  .cv-row .print{width:300px}
+  .cv-row.bottom .print{width:340px}
+  .cv-card{margin:70px auto;padding:66px 40px 46px}
+}
+@media (prefers-reduced-motion:reduce){ .stamp-big,.stamp-num.in{animation:none} }
+
+/* site header (shared) */
+header.top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 16px;padding-block:14px}
+.brand{order:1;white-space:nowrap;font-family:var(--f-display);font-weight:800;font-size:20px;letter-spacing:.06em;line-height:1;text-transform:uppercase;text-decoration:none;color:var(--chalk)}
+header.top .btn{order:2;width:auto;min-height:44px;font-size:17px;padding:0 18px}
+header.top nav{order:3;width:100%}
+.links{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:0 18px;font-size:14px}
+.links a{display:inline-block;padding:11px 0;text-decoration:none;color:var(--chalk)}
+.links a:hover,.links a[aria-current="page"]{text-decoration:underline;text-underline-offset:4px}
+@media (min-width:900px){
+  header.top{flex-wrap:nowrap;padding-block:20px}
+  .brand{font-size:24px}
+  header.top nav{order:2;width:auto;margin-left:auto}
+  header.top .btn{order:3}
+  .links{gap:28px;font-size:15px}
+}
+/* one red thread down the page */
+main{position:relative}
+main > section{position:relative;z-index:1}
+.thread{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+#thread-lines{z-index:4}
+#thread-pins{z-index:5}
+.thread .s{fill:none;stroke:var(--red);stroke-width:2.4;stroke-linecap:round}
+.thread .sh{fill:none;stroke:rgba(0,0,0,.45);stroke-width:2.4;stroke-linecap:round}
+.thread .pinhead{fill:var(--red)}
+.thread .pinshine{fill:rgba(255,255,255,.45)}
+</style>
+</head>
+<body>
+
+
+<div id="desk">
+<div class="lamp" aria-hidden="true"></div>
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="inner">
+<header class="top">
+  <a class="brand" href="./">The Magnifying Society</a>
+  <nav aria-label="Main"><ul class="links"><li><a href="./#case">The case</a></li><li><a href="./#how">The experience</a></li><li><a href="./#faq">FAQ</a></li><li><a href="groups.html">Groups &amp; companies</a></li></ul></nav>
+  <a class="btn btn-red" href="booking.html">Book</a>
+</header>
+
+<main id="main">
+<svg class="thread" id="thread-lines" aria-hidden="true"></svg>
+<svg class="thread" id="thread-pins" aria-hidden="true"></svg>
+<section class="hero" aria-labelledby="h1">
+  <div class="paper casefile">
+    <span class="clip" aria-hidden="true"></span>
+    <div class="hero-grid">
+    <div class="hero-photos">
+      <figure class="print hp1">
+        <span class="anchor" data-a="h1" style="left:50%;top:6px"></span>
+        <img src="img/image_1.jpg" width="800" height="490" alt="Crowds walking past the bandstand above Bondi Beach in the early 1900s">
+        <figcaption>Bondi, 19??</figcaption>
+      </figure>
+      <figure class="print hp2">
+        <span class="anchor" data-a="h2" style="left:50%;top:6px"></span>
+        <img src="img/image_2.jpg" width="800" height="599" alt="Crowded surf at Bondi Beach in front of the Pavilion">
+        <figcaption>The Pavilion</figcaption>
+      </figure>
+    </div>
+    <div class="content">
+      <dl class="form" aria-label="Case record">
+        <div><dt>Case no.</dt><dd>001</dd></div>
+        <div><dt>Location</dt><dd>Bondi Beach</dd></div>
+      </dl>
+      <div class="title-wrap">
+        <h1 id="h1">The O'Brien File</h1>
+        <span class="stamp-big" aria-hidden="true">Unsolved</span>
+      </div>
+      <p class="lead">The original Bondi Beach contract is missing. Find it.</p>
+      <p class="meta">A 90-minute outdoor scavenger hunt through the streets of Bondi.</p>
+      <div class="ctas">
+        <a class="btn btn-red" href="booking.html">Take the case</a>
+        <a class="btn btn-line" href="#case">Read the file</a>
+      </div>
+    </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="case" aria-labelledby="case-h">
+  <div class="case-grid">
+    <div class="case-text">
+      <h2 id="case-h">The case</h2>
+      <div class="pitch body">
+        <p>In 1851, Francis O'Brien bought the land around Bondi Beach. For thirty years the O'Brien Estate was his: he opened it to Sunday picnickers, then threatened to shut them out.</p>
+        <p>In 1882, the government stepped in and made Bondi a public beach. But the O'Brien family kept a claim on the sand, until a single contract signed in 1917 handed the beach to Waverley Council. It sat in the archives for ninety years.</p>
+        <p>In 2007, a Council clerk named Adam Benett found it, and something in it worried him. He hid the contract and never told anyone where.</p>
+        <p>Adam died last year. The trail he left behind has resurfaced. The Council wants the contract back, and they've asked for your help.</p>
+      </div>
+    </div>
+    <figure class="print mapprint">
+      <span class="anchor" data-a="map" style="left:50%;top:2px"></span>
+      <img src="img/image_3.jpg" width="1024" height="688" alt="1917 auction poster for O'Brien's Bondi Beach Estate, showing lots along Campbell Parade and the foreshore">
+      <figcaption>Auction sale, March 1917</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section" id="how" aria-labelledby="how-h">
+  <div class="exp-grid">
+  <div class="intro">
+    <h2 id="how-h">The experience</h2>
+    <p class="body">Grab your team and head out. The O'Brien File is played outdoors, across Bondi, at your own pace.</p>
+    <p class="body">Every puzzle is solved by looking around you: a date on a plaque, a detail on a statue, a word painted on a wall you've walked past a hundred times. No trivia, no app to download. Just sharp eyes and good teamwork.</p>
+  </div>
+  <aside class="paper practice-card" id="practice" aria-label="Practical details">
+    <span class="anchor" data-a="practice" style="left:50%;top:10px"></span>
+    <dl class="facts">
+      <div class="fact"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="1"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>
+        <dt>When<span class="note">Every Saturday</span></dt><dd>10:00 am</dd></div>
+      <div class="fact"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>
+        <dt>Where<span class="note">Meeting point</span></dt><dd>Bondi Beach</dd></div>
+      <div class="fact"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>
+        <dt>How long</dt><dd>About 90 min</dd></div>
+      <div class="fact"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c3 0 3-4 6-4s3 4 6 4"/><circle cx="5" cy="19" r="1.6"/><circle cx="19" cy="7" r="1.6"/><path d="M17 19c2 0 2-3 2-5V8.6" stroke-dasharray="2 2"/></svg>
+        <dt>Distance</dt><dd>4 km</dd></div>
+      <div class="fact"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.9 3.1-6.5 7-6.5s7 2.6 7 6.5"/></svg>
+        <dt>How many<span class="note">Teams formed on the day</span></dt><dd>2–6 per team</dd></div>
+      <div class="fact"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M8.5 14.5c1.8 2 5.2 2 7 0"/><path d="M9.5 9.5h.01M14.5 9.5h.01" stroke-width="2.6"/></svg>
+        <dt>How old<span class="note">Under-15s with an adult (18+)</span></dt><dd>13+</dd></div>
+      <div class="fact"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8V5h18v3a3 3 0 0 0 0 6v3H3v-3a3 3 0 0 0 0-6z"/><path d="M14 5v12" stroke-dasharray="2 2"/></svg>
+        <dt>Price per person</dt><dd>$30</dd></div>
+    </dl>
+    <a class="btn btn-red" href="booking.html">Book</a>
+  </aside>
+  </div>
+  <ol class="steps" aria-label="How it works">
+    <li class="step"><span class="stamp-num wait" aria-hidden="true" style="--r:-9deg;--d:0s"><span>No.</span>1</span>
+      <h3>Take the case</h3><p class="body">Meet us at the starting point in Bondi and get your first lead.</p></li>
+    <li class="step"><span class="stamp-num wait" aria-hidden="true" style="--r:6deg;--d:.3s"><span>No.</span>2</span>
+      <h3>Chase the leads</h3><p class="body">Every clue points to a real place in Bondi. Look closely to find the next.</p></li>
+    <li class="step"><span class="stamp-num wait" aria-hidden="true" style="--r:-4deg;--d:.6s"><span>No.</span>3</span>
+      <h3>Crack it</h3><p class="body">Find the hidden contract before anyone else does.</p></li>
+  </ol>
+</section>
+
+<section class="converge" id="book" aria-labelledby="book-h">
+  <div class="cv-row top">
+    <figure class="print"><img src="img/image_4.jpg" width="800" height="636" alt="Crowds at Wonderland City amusement park on the cliffs near Bondi, early 1900s"><figcaption>Wonderland City</figcaption><span class="anchor" data-a="p1"></span></figure>
+    <figure class="print"><img src="img/image_5.jpg" width="800" height="518" alt="Postcard of the Switchback Railway at Anderson's Wonderland City, Bondi"><figcaption>The Switchback</figcaption><span class="anchor" data-a="p2"></span></figure>
+  </div>
+  <div class="cv-card">
+    <span class="anchor a-top" data-a="card"></span>
+    <h2 id="book-h">Are you in?</h2>
+    <a class="btn btn-red" href="booking.html">See available dates</a>
+  </div>
+
+</section>
+
+<section class="section faq" id="faq" aria-labelledby="faq-h">
+  <div class="faq-wrap">
+    <h2 id="faq-h">Questions</h2>
+    <p class="sub">Interview transcript, filed by the Magnifying Society</p>
+
+    <h3>The experience</h3>
+    <div class="group">
+    <details><summary><span class="q">Q.</span><span class="t">Do we need to know Bondi or Australian history?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="ans"><span class="q">A.</span><p>Not at all. Everything you need is in the file and on the streets.</p></div></details>
+    <details><summary><span class="q">Q.</span><span class="t">What language is the game in?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="ans"><span class="q">A.</span><p>English. All clues, documents and messages are in English.</p></div></details>
+    <details><summary><span class="q">Q.</span><span class="t">Is it scary?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="ans"><span class="q">A.</span><p>No. It's a mystery, not a horror game. Expect suspense, not jump scares.</p></div></details>
+    <details><summary><span class="q">Q.</span><span class="t">What if we get stuck on a puzzle?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="ans"><span class="q">A.</span><p>[How hints work: by message, or from the game master.]</p></div></details>
+    <details><summary><span class="q">Q.</span><span class="t">Is it a race against other teams?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="ans"><span class="q">A.</span><p>[Competitive or at your own pace: your call.]</p></div></details>
+    </div>
+
+    <h3>Participants</h3>
+    <div class="group">
+    <details><summary><span class="q">Q.</span><span class="t">How many people per team?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="ans"><span class="q">A.</span><p>Teams of 2 to 6, formed on the day. Book as many places as you like, whether you come alone or with a crowd.</p></div></details>
+    <details><summary><span class="q">Q.</span><span class="t">Is there a minimum age?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="ans"><span class="q">A.</span><p>13 and over. Under-15s should play with an adult (18+).</p></div></details>
+    <details><summary><span class="q">Q.</span><span class="t">Can we book for a birthday, a hens party or a work team?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="ans"><span class="q">A.</span><p>Yes. <a href="groups.html">Send us a request</a> and we'll set up a private session for your group.</p></div></details>
+    <details><summary><span class="q">Q.</span><span class="t">Is it accessible for wheelchairs or prams?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="ans"><span class="q">A.</span><p>The trail runs along the beach and through the streets of Bondi, with stairs and some steep sections. Access can be difficult, and the route isn't suitable for wheelchairs.</p></div></details>
+    </div>
+
+    <h3>Booking and payment</h3>
+    <div class="group">
+    <details><summary><span class="q">Q.</span><span class="t">How do we pay?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="ans"><span class="q">A.</span><p>[Online when you book: accepted payment methods.]</p></div></details>
+    <details><summary><span class="q">Q.</span><span class="t">Can we cancel or change our date?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="ans"><span class="q">A.</span><p>[Cancellation and rescheduling policy.]</p></div></details>
+    <details><summary><span class="q">Q.</span><span class="t">Do you offer gift vouchers?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="ans"><span class="q">A.</span><p>[Yes / not yet.]</p></div></details>
+    </div>
+
+    <h3>On the day</h3>
+    <div class="group">
+    <details><summary><span class="q">Q.</span><span class="t">Is it all outdoors?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="ans"><span class="q">A.</span><p>Yes, the whole game is played outside in the streets of Bondi.</p></div></details>
+    <details><summary><span class="q">Q.</span><span class="t">What should we wear and bring?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="ans"><span class="q">A.</span><p>Comfortable shoes, a hat, sunscreen and water. Bring one charged phone per team.</p></div></details>
+    <details><summary><span class="q">Q.</span><span class="t">How much walking is it?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="ans"><span class="q">A.</span><p>About 4 km at an easy pace, all within Bondi, with plenty of stops to think.</p></div></details>
+    <details><summary><span class="q">Q.</span><span class="t">Can we leave our bags somewhere?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="ans"><span class="q">A.</span><p>[Bag storage at the start point, or travel light.]</p></div></details>
+    <details><summary><span class="q">Q.</span><span class="t">Are there toilets on the way?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="ans"><span class="q">A.</span><p>[Public toilets along the route, for example at the Pavilion.]</p></div></details>
+    <details><summary><span class="q">Q.</span><span class="t">What happens if it rains?</span><span class="sign" aria-hidden="true"></span></summary>
+      <div class="ans"><span class="q">A.</span><p>If the weather is too wet to play, we cancel the session and refund you in full.</p></div></details>
+    </div>
+  </div>
+</section>
+</main>
+</div>
+
+<footer>
+  <div class="inner"><span class="brand">The Magnifying Society</span><p>Sydney's secret society of city detectives</p><p>@magnifyingsociety</p></div>
+</footer>
+</div>
+
+<script>
+(function(){
+  var NS = 'http://www.w3.org/2000/svg';
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var main = document.getElementById('main');
+  var lines = document.getElementById('thread-lines'), pins = document.getElementById('thread-pins');
+  function A(k){ return main.querySelector('[data-a="' + k + '"]'); }
+  function pt(el, box){ var r = el.getBoundingClientRect(); return { x: r.left - box.left + r.width / 2, y: r.top - box.top + r.height / 2 }; }
+  function mk(tag, attrs, parent){ var e = document.createElementNS(NS, tag); for (var k in attrs) e.setAttribute(k, attrs[k]); parent.appendChild(e); return e; }
+
+  /* each segment draws once, when the object it starts from reaches the middle of the screen */
+  var segs = [
+    { from: 'h1', to: 'map', trigger: 'h1', delay: .6 },
+    { from: 'h2', to: 'map', trigger: 'h1', delay: .8 },
+    { from: 'map', to: 'practice', trigger: 'map' },
+    { from: 'practice', to: 'p2', trigger: 'practice' },
+    { from: 'p1', to: 'card', trigger: 'p1', delay: 0 },
+    { from: 'p2', to: 'card', trigger: 'p1', delay: .2 }
+  ];
+
+  function build(){
+    var box = main.getBoundingClientRect(), vb = '0 0 ' + main.offsetWidth + ' ' + main.offsetHeight;
+    lines.setAttribute('viewBox', vb); pins.setAttribute('viewBox', vb);
+    while (lines.firstChild) lines.removeChild(lines.firstChild);
+    while (pins.firstChild) pins.removeChild(pins.firstChild);
+    var sg = mk('g', {}, lines), lg = mk('g', {}, lines), seen = {};
+    segs.forEach(function(s){
+      var a = A(s.from), b = A(s.to); if (!a || !b) return;
+      var p = pt(a, box), q = pt(b, box), len = Math.hypot(q.x - p.x, q.y - p.y);
+      s.els = [mk('line', { x1: p.x + 1.5, y1: p.y + 3, x2: q.x + 1.5, y2: q.y + 3, 'class': 'sh' }, sg), mk('line', { x1: p.x, y1: p.y, x2: q.x, y2: q.y, 'class': 's' }, lg)];
+      s.els.forEach(function(l){ l.style.transition = 'none'; l.style.strokeDasharray = len; l.style.strokeDashoffset = s.done ? 0 : len; });
+      [p, q].forEach(function(c){
+        var key = Math.round(c.x) + ',' + Math.round(c.y); if (seen[key]) return; seen[key] = 1;
+        mk('circle', { cx: c.x, cy: c.y, r: 7, 'class': 'pinhead' }, pins);
+        mk('circle', { cx: c.x - 2, cy: c.y - 2, r: 2.2, 'class': 'pinshine' }, pins);
+      });
+    });
+    check();
+  }
+  function play(s){
+    if (s.done || !s.els) return; s.done = true;
+    s.els.forEach(function(l){
+      l.style.transition = reduce ? 'none' : 'stroke-dashoffset 1.3s cubic-bezier(.65,0,.25,1) ' + (s.delay || 0) + 's';
+    });
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ s.els.forEach(function(l){ l.style.strokeDashoffset = 0; }); }); });
+  }
+  function check(){
+    var vh = window.innerHeight;
+    segs.forEach(function(s){
+      if (s.done) return;
+      var t = A(s.trigger); if (!t) return;
+      var r = t.parentElement.getBoundingClientRect();
+      if (r.top + Math.min(r.height, vh) * 0.5 < vh * 0.55) play(s);
+    });
+  }
+  var ticking = false;
+  window.addEventListener('scroll', function(){ if (ticking) return; ticking = true; requestAnimationFrame(function(){ check(); ticking = false; }); }, { passive: true });
+  var t; function soon(){ clearTimeout(t); t = setTimeout(build, 120); }
+  window.addEventListener('resize', soon);
+  window.addEventListener('load', build);
+  if ('ResizeObserver' in window) new ResizeObserver(soon).observe(main);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(build);
+  build();
+
+  /* rubber stamps on the three steps */
+  var stamps = document.querySelectorAll('.stamp-num');
+  if (reduce || !('IntersectionObserver' in window)) {
+    Array.prototype.forEach.call(stamps, function(el){ el.classList.remove('wait'); });
+  } else {
+    document.documentElement.classList.add('js');
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting) { e.target.classList.remove('wait'); e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.6 });
+    Array.prototype.forEach.call(stamps, function(el){ io.observe(el); });
+  }
+})();
+</script>
+
+</body>
+</html>

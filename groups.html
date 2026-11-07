@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Private Groups</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=Courier+Prime:wght@400;700&family=Caveat:wght@700&display=swap">
+<style>
+/* Booking page, same desk. Sessions are admission tickets you pick; the order is a ticket stub that totals as you go. Private groups get a typed request form. */
+:root{
+  --wood:#2A1E16; --wood-2:#31231a;
+  --paper:#EFE4CC; --ticket:#F2E8D2; --card:#F2ECDD;
+  --ink:#221913; --muted:#5C4E40; --red:#A3302A;
+  --chalk:#EDE2CA; --chalk-soft:#C9BBA0; --rust:#E2735C; --rule:rgba(237,226,202,.22);
+  --lamp:rgba(255,204,128,.28); --dark:rgba(8,5,3,.72);
+  --shadow:0 18px 28px rgba(0,0,0,.5), 0 3px 6px rgba(0,0,0,.4);
+  --noise:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .2 0 0 0 0 .14 0 0 0 0 .08 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.28'/%3E%3C/svg%3E");
+  --f-display:'Big Shoulders Display','Arial Narrow',Impact,sans-serif;
+  --f-type:'Courier Prime','Courier New',monospace;
+  --f-hand:'Caveat','Bradley Hand','Comic Sans MS',cursive;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);background:#1d140e}
+body{margin:0;background:#1d140e;font-family:var(--f-type);color:var(--chalk);font-size:16px}
+#desk{position:relative;min-height:100vh;overflow:hidden;
+  background:var(--noise),
+    repeating-linear-gradient(91deg, transparent 0 38px, rgba(0,0,0,.16) 38px 40px, transparent 40px 67px, rgba(0,0,0,.12) 67px 68px, transparent 68px 103px),
+    linear-gradient(var(--wood), var(--wood-2))}
+.lamp{position:fixed;inset:0;pointer-events:none;z-index:1;background:radial-gradient(ellipse 100% 46% at 50% 10%, var(--lamp) 0%, rgba(255,190,110,.06) 52%, var(--dark) 94%)}
+.inner{position:relative;z-index:2;max-width:1120px;margin:0 auto;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+a{color:inherit}
+:focus-visible{outline:3px solid #F2C14E;outline-offset:3px}
+.skip{position:absolute;left:16px;top:-60px;z-index:20;background:var(--chalk);color:var(--ink);padding:12px 16px}
+.skip:focus{top:12px}
+
+
+h1,h2,h3{font-family:var(--f-display);font-weight:800;text-transform:uppercase;text-wrap:balance;margin:0;letter-spacing:.01em}
+h1{font-size:clamp(48px,13vw,104px);line-height:.88}
+h2{font-size:clamp(30px,7vw,40px);line-height:.95}
+p{margin:0}
+.lede{font-size:18px;line-height:1.6;color:var(--chalk);margin-top:16px;max-width:46ch}
+.hand{font-family:var(--f-hand);font-weight:700}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;font-family:var(--f-display);font-weight:800;font-size:21px;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;padding:0 24px;border:0;cursor:pointer;background:var(--red);color:#fff;width:100%}
+.btn:hover{background:#8d2721}
+
+.page{padding-block:24px 80px}
+.layout{display:flex;flex-direction:column;gap:48px;margin-top:40px}
+fieldset{border:0;margin:0;padding:0;min-width:0}
+legend{padding:0;margin-bottom:16px}
+.step-h{display:flex;gap:12px;align-items:baseline}
+.step-h .no{font-family:var(--f-hand);font-size:30px;color:var(--rust);line-height:1}
+
+/* sessions as admission tickets */
+.sessions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.ticket{position:relative;display:block;cursor:pointer;color:var(--ink)}
+.ticket input{position:absolute;opacity:0;width:1px;height:1px}
+.ticket .face{position:relative;display:flex;flex-direction:column;gap:2px;padding:16px 16px 14px 22px;min-height:112px;
+  background-color:var(--ticket);background-image:var(--noise);box-shadow:0 8px 14px rgba(0,0,0,.45);
+  -webkit-mask:radial-gradient(circle 9px at 0 50%, transparent 98%, #000) left/51% 100% no-repeat, radial-gradient(circle 9px at 100% 50%, transparent 98%, #000) right/51% 100% no-repeat;
+          mask:radial-gradient(circle 9px at 0 50%, transparent 98%, #000) left/51% 100% no-repeat, radial-gradient(circle 9px at 100% 50%, transparent 98%, #000) right/51% 100% no-repeat;
+  transition:transform .15s ease}
+.ticket .face::before{content:"";position:absolute;left:10px;top:12px;bottom:12px;border-left:2px dotted rgba(34,25,19,.35)}
+.ticket .day{font-size:13px;color:var(--muted)}
+.ticket .date{font-family:var(--f-display);font-weight:800;font-size:30px;line-height:1;text-transform:uppercase}
+.ticket .time{font-size:14px;margin-top:4px}
+.ticket .tag{position:absolute;right:10px;top:10px;font-size:12px;color:var(--red)}
+.ticket .punch{position:absolute;right:12px;bottom:10px;font-family:var(--f-display);font-weight:800;font-size:16px;letter-spacing:.12em;color:var(--red);border:2px solid var(--red);padding:1px 8px;transform:rotate(-8deg);opacity:0}
+.ticket:hover .face{transform:translateY(-2px)}
+.ticket input:checked + .face{box-shadow:0 0 0 3px var(--rust), 0 10px 16px rgba(0,0,0,.5)}
+.ticket input:checked + .face .punch{opacity:1}
+.ticket input:focus-visible + .face{outline:3px solid #F2C14E;outline-offset:4px}
+
+/* players */
+.counts{display:flex;flex-direction:column;border-top:1px solid var(--rule);max-width:560px}
+.count{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--rule)}
+.count-label{font-family:var(--f-display);font-weight:800;font-size:26px;text-transform:uppercase;line-height:1}
+.count .hint{margin-top:4px}
+.stepper{display:flex;align-items:center;border:2px solid var(--chalk)}
+.stepper button{width:52px;height:52px;background:transparent;border:0;color:var(--chalk);font-family:var(--f-display);font-weight:800;font-size:28px;cursor:pointer}
+.stepper button:hover{background:rgba(237,226,202,.08)}
+.stepper button:disabled{color:rgba(237,226,202,.35);cursor:not-allowed}
+.stepper input{width:76px;height:52px;text-align:center;font-family:var(--f-display);font-weight:800;font-size:34px;color:var(--chalk);background:transparent;border:0;border-left:2px solid var(--chalk);border-right:2px solid var(--chalk);-moz-appearance:textfield;appearance:textfield}
+.stepper input::-webkit-outer-spin-button,.stepper input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.stepper input:focus{outline:3px solid #F2C14E;outline-offset:2px}
+.hint{font-size:14px;color:var(--chalk-soft);line-height:1.5;max-width:40ch}
+label.field{display:flex;flex-direction:column;gap:8px;font-size:15px}
+.field input,.field textarea,.field select{font:inherit;font-size:17px;color:var(--chalk);background:rgba(0,0,0,.25);border:0;border-bottom:2px solid var(--chalk-soft);padding:12px 4px;min-height:48px;width:100%}
+.field textarea{min-height:110px;resize:vertical;border:2px solid var(--rule)}
+.field input:focus,.field textarea:focus,.field select:focus{outline:none;border-bottom-color:#F2C14E;background:rgba(0,0,0,.35)}
+.opt{color:var(--chalk-soft);font-size:13px}
+
+/* order stub */
+.stub{position:relative;padding:30px 22px 24px;color:var(--ink);transform:rotate(.8deg);box-shadow:var(--shadow);
+  background-color:var(--card);background-image:var(--noise), linear-gradient(transparent 34px, rgba(163,48,42,.55) 34px, rgba(163,48,42,.55) 35.5px, transparent 35.5px), repeating-linear-gradient(transparent 0 27px, rgba(70,110,150,.16) 27px 28px)}
+.stub h2{color:var(--ink);font-size:30px;margin-bottom:16px}
+.stub dl{margin:0 0 18px}
+.stub dl div{display:flex;justify-content:space-between;gap:16px;padding:9px 0;border-bottom:1px dashed rgba(34,25,19,.4);font-size:15px}
+.stub dd{margin:0;font-weight:700;text-align:right}
+.total{display:flex;justify-content:space-between;align-items:baseline;margin:6px 0 18px}
+.total span:first-child{font-size:15px}
+.total strong{font-family:var(--f-display);font-weight:800;font-size:44px;line-height:1;font-variant-numeric:tabular-nums}
+.policy{font-size:13px;line-height:1.55;color:var(--muted);margin-top:14px}
+.notice{margin-top:14px;font-size:14px;line-height:1.5;padding:10px 12px;border:1px dashed var(--ink)}
+.error{color:#F09A86;font-size:14px;margin-top:10px}
+
+/* groups */
+.groups{margin-top:90px;padding-top:56px;border-top:1px solid var(--rule)}
+.groups-grid{display:flex;flex-direction:column;gap:32px}
+.groups .lede{margin-top:14px}
+.form{display:grid;grid-template-columns:minmax(0,1fr);gap:22px}
+.form .btn{width:auto;justify-self:start}
+.form-status{font-size:14px;color:var(--chalk-soft);line-height:1.5}
+
+footer{position:relative;z-index:2;padding-block:34px;border-top:1px solid var(--rule)}
+footer .inner{display:flex;flex-direction:column;gap:6px;align-items:center;text-align:center}
+footer p{font-size:14px;color:var(--chalk-soft)}
+
+@media (min-width:760px){
+  .page{padding-block:40px 100px}
+  .layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:64px;align-items:start}
+  .sessions{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .stub{position:sticky;top:calc(env(safe-area-inset-top,0px) + 24px)}
+  .groups-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:64px}
+  .form{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .form .full{grid-column:1/-1}
+}
+@media (prefers-reduced-motion:reduce){ .ticket .face{transition:none} }
+
+/* site header (shared) */
+header.top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 16px;padding-block:14px}
+.brand{order:1;white-space:nowrap;font-family:var(--f-display);font-weight:800;font-size:20px;letter-spacing:.06em;line-height:1;text-transform:uppercase;text-decoration:none;color:var(--chalk)}
+header.top .btn{order:2;width:auto;min-height:44px;font-size:17px;padding:0 18px}
+header.top nav{order:3;width:100%}
+.links{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:0 18px;font-size:14px}
+.links a{display:inline-block;padding:11px 0;text-decoration:none;color:var(--chalk)}
+.links a:hover,.links a[aria-current="page"]{text-decoration:underline;text-underline-offset:4px}
+@media (min-width:900px){
+  header.top{flex-wrap:nowrap;padding-block:20px}
+  .brand{font-size:24px}
+  header.top nav{order:2;width:auto;margin-left:auto}
+  header.top .btn{order:3}
+  .links{gap:28px;font-size:15px}
+}
+.name-row{display:grid;grid-template-columns:minmax(0,1fr);gap:22px}
+@media (min-width:520px){.name-row{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.groups-grid > *{min-width:0}
+.groups-grid h1{font-size:clamp(42px,6vw,72px);overflow-wrap:break-word;hyphens:auto}
+</style>
+</head>
+<body>
+<div id="desk">
+<div class="lamp" aria-hidden="true"></div>
+<a class="skip" href="#main">Skip to content</a>
+<div class="inner">
+<header class="top">
+  <a class="brand" href="./">The Magnifying Society</a>
+  <nav aria-label="Main"><ul class="links"><li><a href="./#case">The case</a></li><li><a href="./#how">The experience</a></li><li><a href="./#faq">FAQ</a></li><li><a href="groups.html" aria-current="page">Groups &amp; companies</a></li></ul></nav>
+  <a class="btn btn-red" href="booking.html">Book</a>
+</header>
+
+<main id="main" class="page">
+  <div class="groups-grid" style="margin-top:20px">
+    <div>
+      <h1>Private groups and companies</h1>
+      <p class="lede">Birthdays, hens and bucks parties, team days. Tell us about your group and we'll set up The O'Brien File on your date.</p>
+      <p class="lede" style="color:var(--chalk-soft);font-size:16px">Booking a few friends for a Saturday session? <a href="booking.html">Book online</a> instead.</p>
+    </div>
+    <form id="enquiry" class="form" novalidate>
+        <label class="field" for="g-name">Your name<input id="g-name" name="name" type="text" autocomplete="name" required></label>
+        <label class="field" for="g-email">Email<input id="g-email" name="email" type="email" autocomplete="email" required></label>
+        <label class="field" for="g-size">Group size<input id="g-size" name="size" type="number" min="2" inputmode="numeric" placeholder="12"></label>
+        <label class="field" for="g-date">Preferred date<input id="g-date" name="date" type="date"></label>
+        <label class="field full" for="g-type">Occasion
+          <select id="g-type" name="type"><option>Birthday</option><option>Hens or bucks party</option><option>Work team</option><option>Something else</option></select></label>
+        <label class="field full" for="g-msg">Anything we should know<textarea id="g-msg" name="message"></textarea></label>
+        <div class="full" style="display:flex;flex-direction:column;gap:12px">
+          <button class="btn" type="submit">Send request</button>
+          <p class="form-status" id="g-status" role="status"></p>
+        </div>
+      </form>
+  </div>
+</main>
+</div>
+<footer><div class="inner"><span class="brand">The Magnifying Society</span><p>Sydney's secret society of city detectives</p><p>@magnifyingsociety</p></div></footer>
+</div>
+<script>
+(function(){
+  document.getElementById('enquiry').addEventListener('submit', function(e){
+    e.preventDefault();
+    var st = document.getElementById('g-status'), nm = document.getElementById('g-name'), m = document.getElementById('g-email');
+    if (!nm.value.trim() || !m.value || !m.checkValidity()) { st.textContent = 'Add your name and a valid email so we can reply.'; (nm.value.trim() ? m : nm).focus(); return; }
+    st.textContent = 'Prototype: this form is not connected yet, so nothing was sent.';
+  });
+})();
+</script>
+</body>
+</html>
