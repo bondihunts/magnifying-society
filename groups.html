@@ -169,6 +169,7 @@ header.top nav{order:3;width:100%}
       <p class="lede" style="color:var(--chalk-soft);font-size:16px">Booking a few friends for a Saturday session? <a href="booking.html">Book online</a> instead.</p>
     </div>
     <form id="enquiry" class="form" novalidate>
+<div style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden" aria-hidden="true"><label for="g-web">Website</label><input id="g-web" name="website" type="text" tabindex="-1" autocomplete="off"></div>
         <label class="field" for="g-name">Your name<input id="g-name" name="name" type="text" autocomplete="name" required></label>
         <label class="field" for="g-email">Email<input id="g-email" name="email" type="email" autocomplete="email" required></label>
         <label class="field" for="g-size">Group size<input id="g-size" name="size" type="number" min="2" inputmode="numeric" placeholder="12"></label>
@@ -188,11 +189,30 @@ header.top nav{order:3;width:100%}
 </div>
 <script>
 (function(){
+  var ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJhdmJxZ3V3bHBkaGN5YWJxb3doIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQzNzEwMzEsImV4cCI6MjEwOTk0NzAzMX0.s9RUq_CpV35U_4kMDATVdxfvWoXJVcIF8cvrJ_nbBrQ';
   document.getElementById('enquiry').addEventListener('submit', function(e){
     e.preventDefault();
     var st = document.getElementById('g-status'), nm = document.getElementById('g-name'), m = document.getElementById('g-email');
     if (!nm.value.trim() || !m.value || !m.checkValidity()) { st.textContent = 'Add your name and a valid email so we can reply.'; (nm.value.trim() ? m : nm).focus(); return; }
-    st.textContent = 'Prototype: this form is not connected yet, so nothing was sent.';
+    var form = e.target, btn = form.querySelector('button[type=submit]');
+    var payload = {
+      name: nm.value, email: m.value,
+      size: document.getElementById('g-size').value, date: document.getElementById('g-date').value,
+      type: document.getElementById('g-type').value, message: document.getElementById('g-msg').value,
+      website: document.getElementById('g-web').value
+    };
+    btn.disabled = true; st.textContent = 'Sending your request…';
+    fetch('https://ravbqguwlpdhcyabqowh.supabase.co/functions/v1/group-enquiry', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + ANON, 'apikey': ANON },
+      body: JSON.stringify(payload)
+    }).then(function(r){ return r.json().then(function(d){ return { ok: r.ok, d: d }; }); })
+      .then(function(res){
+        if (res.ok) { form.reset(); st.textContent = "Request sent. We'll get back to you within 48 hours."; }
+        else { st.textContent = (res.d && res.d.error) || "Your request couldn't be sent. Try again in a moment."; }
+      })
+      .catch(function(){ st.textContent = "Your request couldn't be sent. Check your connection and try again."; })
+      .then(function(){ btn.disabled = false; });
   });
 })();
 </script>
