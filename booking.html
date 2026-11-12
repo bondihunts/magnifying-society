@@ -244,7 +244,7 @@ body{padding-bottom:84px}
       <p class="notice" id="proto" role="status" hidden></p>
     </aside>
     <div class="paybar" id="paybar">
-      <div><p class="pb-total" id="pb-total">$0</p><p class="pb-date" id="pb-date">Pick a Saturday</p></div>
+      <div><p class="pb-total" id="pb-total">$0</p><p class="pb-date" id="pb-date">Pick a date</p></div>
       <button class="btn" type="submit">Continue to payment</button>
     </div>
   </form>
@@ -306,7 +306,7 @@ body{padding-bottom:84px}
     document.getElementById('s-young').textContent = n.young + ' × $' + PRICE;
     document.getElementById('s-total').textContent = '$' + (total * PRICE);
     document.getElementById('pb-total').textContent = '$' + (total * PRICE);
-    document.getElementById('pb-date').textContent = (picked ? fmtFull.format(picked) : 'Pick a Saturday') + ' · ' + total + (total === 1 ? ' player' : ' players');
+    document.getElementById('pb-date').textContent = (picked ? fmtFull.format(picked) : 'Pick a date') + ' · ' + total + (total === 1 ? ' player' : ' players');
     document.getElementById('s-date').textContent = picked ? fmtFull.format(picked) : 'Not picked yet';
     document.getElementById('warn-young').hidden = !(n.young > 0 && n.adults === 0);
     if (total > 0) document.getElementById('err-qty').hidden = true;
