@@ -149,6 +149,18 @@ header.top nav{order:3;width:100%}
 @media (min-width:520px){.name-row{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .groups-grid > *{min-width:0}
 .groups-grid h1{font-size:clamp(42px,6vw,72px);overflow-wrap:break-word;hyphens:auto}
+
+/* confirmation */
+.confirm{display:flex;justify-content:center;padding-block:56px 96px}
+.confirm-box{max-width:600px;text-align:center;display:flex;flex-direction:column;align-items:center}
+.confirm h1{font-size:clamp(48px,11vw,88px)}
+.stamp-ok{font-family:var(--f-display);font-weight:800;font-size:30px;letter-spacing:.14em;text-transform:uppercase;color:var(--rust);border:3px solid var(--rust);outline:1.5px solid var(--rust);outline-offset:3px;padding:2px 18px;transform:rotate(-6deg);margin-bottom:26px}
+.confirm-lede{font-size:19px;line-height:1.6;margin-top:20px}
+.confirm-mail{font-size:17px;line-height:1.6;margin-top:10px;color:var(--chalk)}
+.confirm-mail strong{color:#fff;overflow-wrap:anywhere}
+.confirm-sum{margin-top:18px;font-size:15px;color:var(--chalk-soft);border-top:1px dashed var(--rule);border-bottom:1px dashed var(--rule);padding:10px 4px}
+.confirm-note{font-size:14px;color:var(--chalk-soft);margin-top:18px}
+.confirm-btn{width:auto;margin-top:32px}
 </style>
 </head>
 <body>
@@ -162,18 +174,38 @@ header.top nav{order:3;width:100%}
   <a class="btn btn-red" href="booking.html">Book</a>
 </header>
 
-<main id="main" class="page">
-  <div style="max-width:640px;margin-top:40px">
-    <p class="hand" style="font-size:26px;color:var(--rust);margin-bottom:10px">Case file opened.</p>
-    <h1>You're on the case</h1>
-    <p class="lede">Your booking is confirmed. We've emailed you everything you need for Saturday: date, time and what to bring. If you can't find it, check your spam folder.</p>
-    <p class="lede" style="color:var(--chalk-soft);font-size:16px">Need to change your date? Reply to the confirmation email, up to 48 hours before your session.</p>
-    <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:30px">
-      <a class="btn" href="./" style="width:auto">Back to the case</a>
-      <a class="btn" href="booking.html" style="width:auto;background:transparent;box-shadow:inset 0 0 0 2px var(--chalk);color:var(--chalk)">Book another team</a>
-    </div>
+<main id="main" class="page confirm">
+  <div class="confirm-box">
+    <p class="stamp-ok" aria-hidden="true">Paid</p>
+    <h1>Booking confirmed</h1>
+    <p class="confirm-lede">Your payment went through and your place is booked.</p>
+    <p class="confirm-mail" id="mail-line">A confirmation email is on its way to the address you entered.</p>
+    <p class="confirm-sum" id="sum-line" hidden></p>
+    <p class="confirm-note">Can't find the email? Check your spam folder.</p>
+    <a class="btn confirm-btn" href="./">Back to the site</a>
   </div>
 </main>
+<script>
+(function(){
+  var b = null;
+  try { b = JSON.parse(sessionStorage.getItem('tms-booking') || 'null'); } catch (err) {}
+  if (!b) return;
+  if (b.email) {
+    var line = document.getElementById('mail-line');
+    line.textContent = 'A confirmation email is on its way to ';
+    var strong = document.createElement('strong'); strong.textContent = b.email;
+    line.appendChild(strong); line.appendChild(document.createTextNode('.'));
+  }
+  if (b.date) {
+    var parts = [];
+    if (b.adults) parts.push(b.adults + (b.adults === 1 ? ' adult' : ' adults'));
+    if (b.young) parts.push(b.young + ' under 18');
+    var sum = document.getElementById('sum-line');
+    sum.textContent = b.date + ', 10:00 am' + (parts.length ? ' · ' + parts.join(', ') : '');
+    sum.hidden = false;
+  }
+})();
+</script>
 </div>
 <footer><div class="inner"><span class="brand">The Magnifying Society</span><p>Sydney's secret society of city detectives</p><p>@magnifyingsociety</p><p class="legal-links"><a href="terms.html">Booking terms</a> · <a href="privacy.html">Privacy</a></p></div></footer>
 </div>
