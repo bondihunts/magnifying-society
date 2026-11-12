@@ -1,0 +1,19 @@
+# Free Supabase projects pause after 7 days without activity.
+# This pings the database every 3 days so bookings keep working.
+name: Keep Supabase awake
+
+on:
+  schedule:
+    - cron: "17 3 */3 * *"
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase
+        env:
+          URL: https://ravbqguwlpdhcyabqowh.supabase.co/rest/v1/bookings?select=id&limit=1
+          KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJhdmJxZ3V3bHBkaGN5YWJxb3doIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQzNzEwMzEsImV4cCI6MjEwOTk0NzAzMX0.s9RUq_CpV35U_4kMDATVdxfvWoXJVcIF8cvrJ_nbBrQ
+        run: |
+          curl -sS --fail -o /dev/null -w "Supabase answered %{http_code}\n" "$URL" -H "apikey: $KEY" -H "Authorization: Bearer $KEY"

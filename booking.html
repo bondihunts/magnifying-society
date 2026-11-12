@@ -117,6 +117,7 @@ label.field{display:flex;flex-direction:column;gap:8px;font-size:15px}
 footer{position:relative;z-index:2;padding-block:34px;border-top:1px solid var(--rule)}
 footer .inner{display:flex;flex-direction:column;gap:6px;align-items:center;text-align:center}
 footer p{font-size:14px;color:var(--chalk-soft)}
+footer .legal-links a{color:var(--chalk-soft);text-underline-offset:3px}
 
 @media (min-width:760px){
   .page{padding-block:40px 100px}
@@ -234,6 +235,7 @@ body{padding-bottom:84px}
       </dl>
       <p class="total"><span>Total</span><strong id="s-total">$120</strong></p>
       <button class="btn" type="submit">Continue to payment</button>
+      <p class="policy">By continuing, you agree to our <a href="terms.html">booking terms</a>. Payment is processed securely by Stripe.</p>
       <p class="notice" id="proto" role="status" hidden></p>
     </aside>
     <div class="paybar" id="paybar">
@@ -253,7 +255,7 @@ body{padding-bottom:84px}
   </section>
 </main>
 </div>
-<footer><div class="inner"><span class="brand">The Magnifying Society</span><p>Sydney's secret society of city detectives</p><p>@magnifyingsociety</p></div></footer>
+<footer><div class="inner"><span class="brand">The Magnifying Society</span><p>Sydney's secret society of city detectives</p><p>@magnifyingsociety</p><p class="legal-links"><a href="terms.html">Booking terms</a> · <a href="privacy.html">Privacy</a></p></div></footer>
 </div>
 
 <script>
