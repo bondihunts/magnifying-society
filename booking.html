@@ -260,10 +260,10 @@ body{padding-bottom:84px}
       <dl>
         <div><dt>Date</dt><dd id="s-date">Not picked yet</dd></div>
         <div><dt>Time</dt><dd id="s-time">Not picked yet</dd></div>
-        <div><dt>Adults</dt><dd id="s-adults">0 × $30</dd></div>
-        <div><dt>Under 18</dt><dd id="s-young">0 × $30</dd></div>
+        <div><dt>Adults</dt><dd id="s-adults">0 × $25</dd></div>
+        <div><dt>Under 18</dt><dd id="s-young">0 × $25</dd></div>
       </dl>
-      <p class="total"><span>Total</span><strong id="s-total">$120</strong></p>
+      <p class="total"><span>Total</span><strong id="s-total">$0</strong></p>
       <button class="btn" type="submit">Continue to payment</button>
       <p class="policy">By continuing, you agree to our <a href="terms.html">booking terms</a>. Payment is processed securely by Stripe.</p>
       <p class="notice" id="proto" role="status" hidden></p>
@@ -283,7 +283,7 @@ body{padding-bottom:84px}
 <script>
 (function(){
   var ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJhdmJxZ3V3bHBkaGN5YWJxb3doIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQzNzEwMzEsImV4cCI6MjEwOTk0NzAzMX0.s9RUq_CpV35U_4kMDATVdxfvWoXJVcIF8cvrJ_nbBrQ';
-  var PRICE = 30, MAX = 6, picked = null, pickedTime = null, n = { adults: 0, young: 0 };
+  var PRICE = 25, MAX = 6, picked = null, pickedTime = null, n = { adults: 0, young: 0 };
   var SLOTS = ['09:00', '11:00', '13:00', '15:00', '17:00'], taken = {};
   var fmtDay = new Intl.DateTimeFormat('en-AU', { weekday: 'short' });
   var fmtMon = new Intl.DateTimeFormat('en-AU', { month: 'short' });
