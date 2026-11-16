@@ -74,6 +74,7 @@ legend{padding:0;margin-bottom:12px;width:100%}
 .ticket .tag{position:absolute;right:10px;top:10px;font-size:12px;color:var(--red)}
 .ticket .punch{position:absolute;right:6px;top:6px;font-family:var(--f-display);font-weight:800;font-size:11px;letter-spacing:.12em;color:var(--red);border:2px solid var(--red);padding:0 5px;transform:rotate(-8deg);opacity:0}
 .ticket.full{cursor:not-allowed}
+.ticket.closed{display:none!important}
 .ticket.full .face{opacity:.38;box-shadow:none}
 .ticket.full:hover .face{transform:none}
 .ticket.full .day::after{content:" · Full"}
@@ -284,7 +285,7 @@ body{padding-bottom:84px}
 (function(){
   var ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJhdmJxZ3V3bHBkaGN5YWJxb3doIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQzNzEwMzEsImV4cCI6MjEwOTk0NzAzMX0.s9RUq_CpV35U_4kMDATVdxfvWoXJVcIF8cvrJ_nbBrQ';
   var PRICE = 25, MAX = 6, picked = null, pickedTime = null, n = { adults: 0, young: 0 };
-  var SLOTS = ['09:00', '11:00', '13:00', '15:00', '17:00'], taken = {};
+  var SLOTS = ['09:00', '11:00', '13:00', '15:00', '17:00'], taken = {}, closed = {};
   var fmtDay = new Intl.DateTimeFormat('en-AU', { weekday: 'short' });
   var fmtMon = new Intl.DateTimeFormat('en-AU', { month: 'short' });
   var fmtFull = new Intl.DateTimeFormat('en-AU', { weekday: 'short', day: 'numeric', month: 'long' });
@@ -292,7 +293,7 @@ body{padding-bottom:84px}
   function isoOf(d){ return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
   function timeLabel(t){ var h = Number(t.slice(0, 2)); return (h % 12 || 12) + ':00 ' + (h < 12 ? 'am' : 'pm'); }
   function slotOpen(iso, t){
-    if (taken[iso + ' ' + t]) return false;
+    if (closed[iso] || taken[iso + ' ' + t]) return false;
     var start = new Date(iso + 'T' + t + ':00');
     return start.getTime() - Date.now() > 60 * 60 * 1000; // at least 1 hour ahead
   }
@@ -334,7 +335,7 @@ body{padding-bottom:84px}
   function refreshAvailability(){
     Array.prototype.forEach.call(list.querySelectorAll('input'), function(inp){
       var open = SLOTS.some(function(t){ return slotOpen(inp.value, t); });
-      inp.disabled = !open; inp.parentNode.classList.toggle('full', !open);
+      inp.disabled = !open; inp.parentNode.classList.toggle('full', !open); inp.parentNode.classList.toggle('closed', !!closed[inp.value]);
       if (!open && inp.checked) { inp.checked = false; picked = null; }
     });
     var any = false;
@@ -351,7 +352,7 @@ body{padding-bottom:84px}
   function loadAvailability(){
     return fetch('https://ravbqguwlpdhcyabqowh.supabase.co/functions/v1/availability', { headers: { 'Authorization': 'Bearer ' + ANON, 'apikey': ANON } })
       .then(function(r){ return r.json(); })
-      .then(function(data){ taken = {}; (data.taken || []).forEach(function(k){ taken[k] = true; }); refreshAvailability(); })
+      .then(function(data){ taken = {}; closed = {}; (data.taken || []).forEach(function(k){ taken[k] = true; }); (data.closed || []).forEach(function(k){ closed[k] = true; }); refreshAvailability(); })
       .catch(function(){ refreshAvailability(); });
   }
 
