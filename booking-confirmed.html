@@ -201,7 +201,7 @@ header.top nav{order:3;width:100%}
     if (b.adults) parts.push(b.adults + (b.adults === 1 ? ' adult' : ' adults'));
     if (b.young) parts.push(b.young + ' under 18');
     var sum = document.getElementById('sum-line');
-    sum.textContent = b.date + ', 10:00 am' + (parts.length ? ' · ' + parts.join(', ') : '');
+    sum.textContent = b.date + (b.time ? ', ' + b.time : '') + (parts.length ? ' · ' + parts.join(', ') : '');
     sum.hidden = false;
   }
 })();
