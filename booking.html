@@ -86,6 +86,7 @@ legend{padding:0;margin-bottom:12px;width:100%}
 .slot input:focus-visible + span{outline:3px solid #F2C14E;outline-offset:3px}
 .slot input:disabled + span{border-color:var(--rule);color:var(--rule);text-decoration:line-through;cursor:not-allowed;background:none}
 .slots-hint{font-size:14px;color:var(--chalk-soft);margin-top:10px}
+.slots.waiting .slot input:disabled + span{text-decoration:none;opacity:.6}
 .ticket:hover .face{transform:translateY(-2px)}
 .ticket input:checked + .face{background-color:var(--red);color:#fff}
 .ticket input:checked + .face .day{color:rgba(255,255,255,.85)}
@@ -214,10 +215,10 @@ body{padding-bottom:84px}
       </fieldset>
 
       <fieldset>
-        <legend><span class="step-h"><span class="no" aria-hidden="true">2</span><h2>Pick a time</h2></span></legend>
+        <legend><span class="step-h"><span class="no" aria-hidden="true">2</span><h2>Pick a session</h2></span></legend>
         <div class="slots" id="slots"></div>
-        <p class="slots-hint" id="slots-hint">Pick a date to see the free times. Each session is private: just you and your group.</p>
-        <p class="error" id="err-time" hidden>Pick a time to continue.</p>
+        <p class="slots-hint" id="slots-hint" hidden>No sessions left on this day. Pick another date.</p>
+        <p class="error" id="err-time" hidden>Pick a session to continue.</p>
       </fieldset>
 
       <fieldset>
@@ -241,7 +242,7 @@ body{padding-bottom:84px}
           </div>
         </div>
         <p class="error" id="err-qty" hidden>Add at least one player.</p>
-        <p class="hint" id="max-note" hidden style="margin-top:10px">A session is for up to 6 players. Bigger group? <a href="groups.html">Ask us about a private event</a>.</p>
+        <p class="hint" style="margin-top:10px;max-width:none">More than 6 players, or planning a birthday, a hens party or a team day? <a href="groups.html">Ask us about a group event</a>.</p>
         <p class="error" id="warn-young" hidden>Children under 15 must play with a parent or guardian. Remember to add them as an adult.</p>
       </fieldset>
 
@@ -274,7 +275,6 @@ body{padding-bottom:84px}
     </div>
   </form>
 
-  <p class="hint" style="margin-top:56px;max-width:none">More than 6 players, or planning a birthday, a hens party or a team day? <a href="groups.html">Ask us about a group event</a>.</p>
 </main>
 </div>
 <footer><div class="inner"><span class="brand">The Magnifying Society</span><p>Sydney's secret society of city detectives</p><p>@magnifyingsociety</p><p class="legal-links"><a href="terms.html">Booking terms</a> · <a href="privacy.html">Privacy</a></p></div></footer>
@@ -344,8 +344,8 @@ body{padding-bottom:84px}
       inp.parentNode.querySelector('span').setAttribute('aria-label', timeLabel(inp.value) + (picked && !open ? ', not available' : ''));
       if (!open && inp.checked) { inp.checked = false; pickedTime = null; }
     });
-    document.getElementById('slots-hint').textContent = !picked ? 'Pick a date to see the free times. Each session is private: just you and your group.'
-      : any ? 'Each session is private: just you and your group. It lasts about 90 minutes.' : 'No free times left on this day. Pick another date.';
+    document.getElementById('slots-hint').hidden = !picked || any;
+    slotsEl.classList.toggle('waiting', !picked);
     render();
   }
   function loadAvailability(){
@@ -371,7 +371,6 @@ body{padding-bottom:84px}
     document.getElementById('pb-date').textContent = (picked ? fmtFull.format(picked) + (pickedTime ? ', ' + timeLabel(pickedTime) : '') : 'Pick a date') + ' · ' + total + (total === 1 ? ' player' : ' players');
     document.getElementById('s-date').textContent = picked ? fmtFull.format(picked) : 'Not picked yet';
     document.getElementById('s-time').textContent = pickedTime ? timeLabel(pickedTime) : 'Not picked yet';
-    document.getElementById('max-note').hidden = total < MAX;
     document.getElementById('warn-young').hidden = !(n.young > 0 && n.adults === 0);
     if (total > 0) document.getElementById('err-qty').hidden = true;
   }
