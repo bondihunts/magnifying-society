@@ -131,6 +131,7 @@ footer p{font-size:14px;color:var(--chalk-soft)}
 /* site header (shared) */
 header.top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 16px;padding-block:14px}
 .brand{order:1;white-space:nowrap;font-family:var(--f-display);font-weight:800;font-size:20px;letter-spacing:.06em;line-height:1;text-transform:uppercase;text-decoration:none;color:var(--chalk)}
+.brand img{display:block;height:46px;width:auto}
 header.top .btn{order:2;width:auto;min-height:44px;font-size:17px;padding:0 18px}
 header.top nav{order:3;width:100%}
 .links{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:0 18px;font-size:14px}
@@ -139,6 +140,7 @@ header.top nav{order:3;width:100%}
 @media (min-width:900px){
   header.top{flex-wrap:nowrap;padding-block:20px}
   .brand{font-size:24px}
+  .brand img{height:58px}
   header.top nav{order:2;width:auto;margin-left:auto}
   header.top .btn{order:3}
   .links{gap:28px;font-size:15px}
@@ -167,7 +169,7 @@ footer .legal-links a{color:var(--chalk-soft);text-underline-offset:3px}
 <a class="skip" href="#main">Skip to content</a>
 <div class="inner">
 <header class="top">
-  <a class="brand" href="./">The Magnifying Society</a>
+  <a class="brand" href="./"><img src="logo.svg" alt="The Magnifying Society" width="96" height="53"></a>
   <nav aria-label="Main"><ul class="links"><li><a href="./#case">The case</a></li><li><a href="./#how">The experience</a></li><li><a href="./#faq">FAQ</a></li><li><a href="groups.html">Groups &amp; companies</a></li></ul></nav>
   <a class="btn btn-red" href="booking.html">Book</a>
 </header>
