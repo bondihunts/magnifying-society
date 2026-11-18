@@ -1,6 +1,13 @@
 <!doctype html>
 <html lang="en">
 <head>
+<!-- Google tag (Google Analytics) -->
+<script async src="https://www.googletagmanager.com/gtm.js?id=GTM-5LXGMR52"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Group Activities & Team Building in Bondi, Sydney | The Magnifying Society</title>
@@ -223,7 +230,7 @@ header.top nav{order:3;width:100%}
       body: JSON.stringify(payload)
     }).then(function(r){ return r.json().then(function(d){ return { ok: r.ok, d: d }; }); })
       .then(function(res){
-        if (res.ok) { form.reset(); st.textContent = "Request sent. We'll get back to you within 48 hours."; }
+        if (res.ok) { try { gtag('event', 'generate_lead', { lead_source: 'group_request', group_size: payload.size }); } catch (err) {} form.reset(); st.textContent = "Request sent. We'll get back to you within 48 hours."; }
         else { st.textContent = (res.d && res.d.error) || "Your request couldn't be sent. Try again in a moment."; }
       })
       .catch(function(){ st.textContent = "Your request couldn't be sent. Check your connection and try again."; })

@@ -1,6 +1,13 @@
 <!doctype html>
 <html lang="en">
 <head>
+<!-- Google tag (Google Analytics) -->
+<script async src="https://www.googletagmanager.com/gtm.js?id=GTM-5LXGMR52"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Book a Bondi Activity | The O'Brien File Mystery Game, Sydney</title>
@@ -412,6 +419,8 @@ body{padding-bottom:84px}
     if (first) { first.focus(); return; }
     var note = document.getElementById('proto'), btns = document.querySelectorAll('#booking button[type=submit]');
     var d = picked, iso = isoOf(d), t = pickedTime;
+    var qty = n.adults + n.young;
+    try { gtag('event', 'begin_checkout', { currency: 'AUD', value: qty * PRICE, items: [{ item_id: 'obrien-file', item_name: "The O'Brien File", price: PRICE, quantity: qty }] }); } catch (err) {}
     btns.forEach(function(b){ b.disabled = true; });
     note.hidden = false; note.textContent = 'Opening secure payment…';
     fetch('https://ravbqguwlpdhcyabqowh.supabase.co/functions/v1/create-checkout', {
@@ -421,7 +430,7 @@ body{padding-bottom:84px}
     }).then(function(r){ return r.json().then(function(data){ return { ok: r.ok, data: data }; }); })
       .then(function(res){
         if (res.ok && res.data.url) {
-          try { sessionStorage.setItem('tms-booking', JSON.stringify({ email: email.value.trim(), date: fmtFull.format(d), time: timeLabel(t), adults: n.adults, young: n.young })); } catch (err) {}
+          try { sessionStorage.setItem('tms-booking', JSON.stringify({ email: email.value.trim(), date: fmtFull.format(d), time: timeLabel(t), adults: n.adults, young: n.young, price: PRICE, ref: 'TMS-' + Date.now().toString(36) })); } catch (err) {}
           window.location.href = res.data.url; return;
         }
         note.textContent = (res.data && res.data.error) || "Payment couldn't start. Try again in a moment.";
